@@ -14,3 +14,14 @@ O GIF foi codificado dos frames de screencast do navegador durante a execução 
 ![Respostas reais da API](evidence/screen.jpg)
 
 ![Gravação do fluxo HTTP](evidence/flow.gif)
+
+## Registro na Conty
+
+Status observado: **Entrega registrada**, em 2026-10-09T19:46:24.360Z.
+
+- [Link enviado](https://github.com/Otavio-Machado-Santos/conty-metricas-redes).
+- [Página do desafio](https://challenge.appconty.com/desafios/rastreio-redes).
+- [Recibo e texto persistidos](evidence/conty-recibo.json).
+- [Screenshot real do registro](evidence/conty-recibo.jpg).
+
+O registro confirma o envio do link; a avaliação da Conty e o ranking dependem da auditoria da organização. Não é uma aprovação técnica pelo avaliador.
