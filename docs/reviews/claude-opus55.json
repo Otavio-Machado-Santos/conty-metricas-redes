@@ -1,0 +1,67 @@
+{
+  "id": 4,
+  "reviewed_sha": "ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c",
+  "publication_sha": "dd35a039b10e208b5b0582a24c5f7e42ec001db4",
+  "verdict": "approved",
+  "summary": "rastreio-redes: a idempotência por (network, account, post, observed_at normalizado) não infla totais em replay, janelas sobrepostas, fusos equivalentes ou concorrência. O retry tem teto (maxAttempts 1-10, backoff limitado, timeout por AbortSignal). O 429 respeita Retry-After em segundos e em HTTP-date; acima do teto devolve 429 com cooldown sem tentativa antecipada. fetched_at e first_fetched_at estão presentes, e a fronteira fetchPosts fica isolada em src/providers/simulated.js.",
+  "tests": [
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "result": "75/75"
+    },
+    {
+      "command": "TZ=America/Sao_Paulo npm test",
+      "exit_code": 0,
+      "result": "75/75"
+    },
+    {
+      "command": "blobcheck vs index do diff",
+      "exit_code": 0,
+      "result": "22 MATCH; README difere só na nota de IA (reconstruído = 9f4e825, bate com o diff)"
+    },
+    {
+      "command": "http-probe.mjs (127.0.0.1:3004)",
+      "exit_code": 0,
+      "result": "52 PASS/0 FAIL. Janela sobreposta new 1 dup 2; replay new 0 dup 3; always-timeout dá 504 após 3 tentativas; rate-limit-too-long dá 429 Retry-After 120 sem tentativa"
+    },
+    {
+      "command": "unit-probe.mjs em TZ UTC/SP/Kiritimati",
+      "exit_code": 0,
+      "result": "10/10 em cada fuso"
+    },
+    {
+      "command": "npm run demo",
+      "exit_code": 0,
+      "result": "Saída igual a docs/evidence/demo.txt"
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "file": "src/store.js",
+      "line": 56,
+      "title": "Correção do provedor no mesmo (post, observed_at) trava o sync da conta",
+      "details": "O conflito rejeita o lote inteiro com 502 conflicting_snapshot. É escolha documentada (README:57) e o contrato não exige tratar correções.",
+      "reproduction": "conflict-probe.mjs: p1@10:00 com views 100 e depois p1@10:00 com views 101 + p2-novo",
+      "expected": "Sugestão: quarentena do conflito e progresso dos demais posts",
+      "actual": "sync2-4 dão 502 e p2-novo nunca é gravado"
+    }
+  ],
+  "limits": [
+    "Sem git: publication_sha não verificado. Sem rede: recibo comparado só localmente (o recibo externo e o local têm main_text idêntico).",
+    "O teto vale por espera, não por orçamento total da sync, e isso está documentado em README:69.",
+    "flow.gif não foi inspecionado quadro a quadro."
+  ],
+  "approval_basis": "Os cinco critérios de 'Como avaliamos' foram reproduzidos por testes e HTTP real; só há P3.",
+  "review_provenance": {
+    "round": 1,
+    "session_id": "86ab9e40-d8b8-4b16-b157-bacf36407c05",
+    "review_file": "revisoes/claude-opus55/parecer-primeira-rodada.json",
+    "review_sha256": "ac93c4aacab182c9a54f6e9c37293083de93e033af03f98e762648d629d8dead",
+    "previous_adjustment": null
+  },
+  "model": "claude-opus-5-5",
+  "review_kind": "independent_subagent_review",
+  "reviewed_after_conty_registration": true
+}
