@@ -1,0 +1,54 @@
+{
+  "challenge": "metricas-redes",
+  "reviewer": "/root/implementar_roteiro",
+  "independence": "Este agente não implementou nem alterou métricas-redes; implementou revisão de roteiro e revisou repasses/vendas.",
+  "axis": "Snapshot idempotente e isolado por conta, fetched_at, retries/timeout limitados, Retry-After em segundos/HTTP-date e teto",
+  "base_sha": "25a2081082021ece537ef8b12b8aa2537ef06b68",
+  "reviewed_sha": "ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c",
+  "runtime": "Node v22.23.3",
+  "read": [
+    "docs/enunciado.txt", "README.md", "package.json", "src/service.js", "src/retry.js",
+    "src/store.js", "src/validation.js", "src/errors.js", "src/http.js", "src/server.js",
+    "src/providers/simulated.js", "test/helpers.js", "test/idempotency.test.js", "test/retry.test.js",
+    "test/cooldown.test.js", "test/http.test.js"
+  ],
+  "commands": [
+    {
+      "command": "npm test (Node 22 no PATH)",
+      "result": "pass",
+      "details": "75 testes verdes incluindo 40 casos principais e subtestes; exit 0"
+    },
+    {
+      "command": "TZ=Pacific/Honolulu node --test --test-reporter=dot test/*.test.js",
+      "result": "pass",
+      "details": "Mesma suíte: 75 testes verdes; parser HTTP-date, inclusive asctime sem GMT escrito, independente do fuso local"
+    },
+    {
+      "command": "git diff --check BASE...CANDIDATE; git status --porcelain; git rev-parse HEAD",
+      "result": "pass",
+      "details": "Diff sem whitespace problemático, checkout limpo e SHA fixo ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c"
+    },
+    {
+      "command": "node --input-type=module; sondagens independentes com relógio e timers controlados",
+      "result": "pass",
+      "details": [
+        "Retry-After 1 segundo, IMF HTTP-date, RFC850 e asctime com clock fracionário .250: segunda tentativa exatamente após 1000/1750 ms, nunca antes",
+        "429 com 5 segundos e teto de 2 segundos: primeira chamada adiada sem sleep, chamada concorrente da mesma conta adiada com attempts:0; outra conta sincroniza; retomada espera os 2000 ms restantes",
+        "Timeout de 25 ms acionado por timer controlado aborta sinal, retry conclui e limpa timers; resposta tardia da primeira operação que ignora abort não altera o store",
+        "HTTP 408/500/599 transitórios repetidos: exatamente quatro tentativas, sleeps [500,600,600] limitados, nenhuma escrita",
+        "30 posts com seis medições cada, duplicatas em ordem inversa e cinco janelas sobrepostas/antigas: 30 posts únicos, latest correto, seis snapshots únicos por post, totais conferidos por modelo externo",
+        "Retry-After gigantesco vira Infinity/defer em vez de overflow que produziria retry antecipado"
+      ]
+    }
+  ],
+  "findings": [],
+  "verdict": "pass",
+  "conclusion": "Os requisitos examinados passaram por testes independentes. O lote aplica snapshots únicos atomicamente, latest é temporal, fetched_at fica visível e tokens não são expostos. Timeout/retry têm limites; Retry-After dentro do teto é respeitado e acima do teto adia sem antecipar, com cooldown por conta. Fronteira do provedor legível e substituível.",
+  "limitations": [
+    "Estado e cooldown em memória, perdidos ao reiniciar, conforme README.",
+    "Não houve integração com redes externas nem OAuth real; autorizado fictício é o escopo do desafio.",
+    "A espera tem teto por prazo de retry, não orçamento global do sync, escolha explicitada no README.",
+    "O adaptador que ignora AbortSignal pode manter recursos próprios, mas sondagem confirmou que não consegue publicar resposta tardia no store.",
+    "Este relatório não altera código nem publica ou envia entrega."
+  ]
+}

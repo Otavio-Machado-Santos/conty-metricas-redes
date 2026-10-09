@@ -82,4 +82,6 @@ Estado e cooldown são em memória e se perdem ao reiniciar. OAuth, autenticaç�
 
 `npm test` valida invariantes de idempotência/atomicidade, concorrência, separação de contas, validação de entrada/resposta, retries/timeout/429 e fluxo HTTP completo. [test/idempotency.test.js](test/idempotency.test.js), [test/retry.test.js](test/retry.test.js), [test/cooldown.test.js](test/cooldown.test.js) e [test/http.test.js](test/http.test.js) organizam os cenários. [docs/demo.http](docs/demo.http) é o roteiro de requests para captura real.
 
-Implementação, testes, interface de demonstração e documentação foram produzidos com assistência de IA (Codex). O agente de implementação conferiu o enunciado, inspecionou os invariantes e executou os testes Node.js 22 e o fluxo HTTP. Revisões independentes por outros agentes serão registradas pelo coordenador antes do envio. Não houve revisão humana de código ou integração com redes reais nesta etapa.
+Codex produziu código, testes e documentação. Dois agentes Codex independentes do implementador revisaram o commit `ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c` e liberaram a entrega após testes e sondagens próprias. Os pareceres completos estão em `docs/reviews/`. O coordenador conferiu a instalação e os testes em checkout isolado e registrou o fluxo HTTP real. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
+
+[Verificação final, revisões independentes e captura do fluxo real](docs/verificacao-final.md).

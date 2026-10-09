@@ -1,0 +1,91 @@
+{
+  "reviewed_sha": "ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c",
+  "base_sha": "25a2081082021ece537ef8b12b8aa2537ef06b68",
+  "reviewer": "Codex independent reviewer B (/root/implementar_video)",
+  "reviewed_at": "2026-10-09T19:15:39.177108+00:00",
+  "runtime": "v22.23.3",
+  "axis": "timeouts efetivos, tentativas/retry, Retry-After/teto/cooldown, duplicação/overlap/concorrência/stale update, atomicidade em memória e HTTP",
+  "contract_sources": [
+    "docs/enunciado.txt",
+    "README.md",
+    "test/retry.test.js",
+    "test/cooldown.test.js",
+    "test/idempotency.test.js",
+    "test/http.test.js"
+  ],
+  "commands": [
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "result": "75/75 testes passaram; 40 cenários principais e subtestes"
+    },
+    {
+      "command": "node /tmp/conty-metrics-review-b.mjs",
+      "exit_code": 0,
+      "result": "5 sondagens independentes passaram",
+      "probes": [
+        {
+          "probe": "dois timeouts reais limitados e resposta tardia sem escrita",
+          "passed": true,
+          "elapsedMs": 34.95,
+          "exhaustedAttempts": 2,
+          "abortedSignals": 2,
+          "retainedViews": 200
+        },
+        {
+          "probe": "doze syncs concorrentes não contornam cooldown acima do teto; retomada espera restante",
+          "passed": true,
+          "deferredRequests": 12,
+          "prematureProviderCalls": 0,
+          "waitsMs": [
+            900
+          ],
+          "resumedAt": "2026-06-01T12:00:05.000Z"
+        },
+        {
+          "probe": "backoff transitório tem teto por espera e número exato de tentativas",
+          "passed": true,
+          "attempts": 4,
+          "waitsMs": [
+            400,
+            500,
+            500
+          ]
+        },
+        {
+          "probe": "lote conflitante reverte novos posts/fetched_at; sobreposição e snapshot atrasado preservam latest",
+          "passed": true,
+          "totalViews": 150,
+          "duplicateSnapshots": 2,
+          "postASnapshotCount": 2
+        },
+        {
+          "probe": "HTTP expõe Retry-After sem token/texto bruto e rejeita entradas fora do contrato",
+          "passed": true,
+          "retryAfterHeader": "5",
+          "retryAfterMs": 5000,
+          "invalidInputsRejected": 5
+        }
+      ]
+    },
+    {
+      "command": "git rev-parse HEAD; git status --short; git diff --check",
+      "exit_code": 0,
+      "result": "SHA fixo preservado, árvore limpa e nenhum código editado"
+    }
+  ],
+  "findings": [],
+  "reasoning": [
+    "Promise.race impõe timeout por tentativa mesmo quando o adaptador ignora AbortSignal. Dois timeouts reais terminaram em aproximadamente 35ms, abortaram ambos os sinais e não gravaram resultados tardios.",
+    "429 acima do teto é adiado e sua deadline é preservada por conta. Doze solicitações concorrentes não provocaram tentativa antecipada; retomada aguardou os 900ms restantes.",
+    "Retry de 503 respeitou quatro tentativas e esperas de 400/500/500ms; nenhum prazo ultrapassou o teto configurado.",
+    "Identidade de snapshot usa conta/rede/post/instante normalizado. Latest é temporal, e duplicatas não somam contadores; snapshot atrasado não substitui a medição mais recente.",
+    "O lote trabalha numa cópia antes de publicar; um novo post seguido de conflito não alterou posts, fetched_at nem last_sync_at.",
+    "Provedor é interface isolada, recebe sinal e não acessa o store. HTTP sanitiza texto bruto e token, expõe Retry-After e rejeita entradas desconhecidas ou inválidas."
+  ],
+  "limits": [
+    "O armazenamento e cooldown são em memória, como explicitado no README; persistência entre reinícios e lock distribuído não fazem parte desta implementação nem dos critérios do enunciado.",
+    "Sondagens e testes usam um provedor simulado, sockets HTTP locais, relógio controlado e temporizadores reais/controlados; nenhuma integração de rede social foi realizada."
+  ],
+  "verdict": "pass"
+}

@@ -1,0 +1,705 @@
+{
+  "challenge": 4,
+  "started_at": "2026-10-09T19:42:32.194Z",
+  "finished_at": "2026-10-09T19:42:33.302Z",
+  "environment": "macOS, Node22, HTTP loopback, dados sintéticos",
+  "passed": true,
+  "steps": [
+    {
+      "label": "API local identifica o provedor simulado",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "response": {
+        "status": "ok",
+        "provider": "simulated"
+      },
+      "checks": [
+        {
+          "field": "status",
+          "expected": "ok",
+          "actual": "ok",
+          "passed": true
+        },
+        {
+          "field": "provider",
+          "expected": "simulated",
+          "actual": "simulated",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 23
+    },
+    {
+      "label": "Conexão autorizada fictícia com simulação de 429",
+      "method": "POST",
+      "path": "/connections",
+      "request": {
+        "id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "creator_id": "criador-captura-04",
+        "network": "instagram",
+        "account_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "token": "ficticio",
+        "simulation": "rate-limit-once"
+      },
+      "http_status": 201,
+      "response": {
+        "id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "creator_id": "criador-captura-04",
+        "network": "instagram",
+        "account_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "simulation": "rate-limit-once",
+        "created_at": "2026-10-09T19:42:32.224Z",
+        "last_sync_at": null,
+        "authorized": true
+      },
+      "checks": [
+        {
+          "field": "id",
+          "expected": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "actual": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "passed": true
+        },
+        {
+          "field": "account_id",
+          "expected": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "actual": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "passed": true
+        },
+        {
+          "field": "network",
+          "expected": "instagram",
+          "actual": "instagram",
+          "passed": true
+        },
+        {
+          "field": "authorized",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        {
+          "field": "simulation",
+          "expected": "rate-limit-once",
+          "actual": "rate-limit-once",
+          "passed": true
+        },
+        {
+          "field": "last_sync_at",
+          "expected": null,
+          "actual": null,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 9
+    },
+    {
+      "label": "429 com Retry-After: segunda tentativa coleta duas medições",
+      "method": "POST",
+      "path": "/connections/c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3/sync",
+      "request": {
+        "from": "2026-06-01T09:00:00Z",
+        "to": "2026-06-01T10:59:59Z"
+      },
+      "http_status": 200,
+      "response": {
+        "connection_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "window": {
+          "from": "2026-06-01T09:00:00.000Z",
+          "to": "2026-06-01T10:59:59.000Z"
+        },
+        "fetched_at": "2026-10-09T19:42:33.234Z",
+        "received": 2,
+        "new_snapshots": 2,
+        "duplicates": 0,
+        "outside_window": 0,
+        "attempts": 2,
+        "waits_ms": [
+          1000
+        ],
+        "posts": [
+          {
+            "post_id": "post-1",
+            "snapshot_count": 1,
+            "latest": {
+              "post_id": "post-1",
+              "observed_at": "2026-06-01T10:00:00.000Z",
+              "views": 100,
+              "likes": 10,
+              "comments": 2,
+              "first_fetched_at": "2026-10-09T19:42:33.234Z",
+              "fetched_at": "2026-10-09T19:42:33.234Z"
+            }
+          },
+          {
+            "post_id": "post-2",
+            "snapshot_count": 1,
+            "latest": {
+              "post_id": "post-2",
+              "observed_at": "2026-06-01T10:30:00.000Z",
+              "views": 60,
+              "likes": 8,
+              "comments": 1,
+              "first_fetched_at": "2026-10-09T19:42:33.234Z",
+              "fetched_at": "2026-10-09T19:42:33.234Z"
+            }
+          }
+        ],
+        "totals": {
+          "views": 160,
+          "likes": 18,
+          "comments": 3
+        }
+      },
+      "checks": [
+        {
+          "field": "connection_id",
+          "expected": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "actual": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+          "passed": true
+        },
+        {
+          "field": "attempts",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "received",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "new_snapshots",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "duplicates",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "posts.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "totals.views",
+          "expected": 160,
+          "actual": 160,
+          "passed": true
+        },
+        {
+          "field": "totals.likes",
+          "expected": 18,
+          "actual": 18,
+          "passed": true
+        },
+        {
+          "field": "totals.comments",
+          "expected": 3,
+          "actual": 3,
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.fetched_at",
+          "expected": "2026-10-09T19:42:33.234Z",
+          "actual": "2026-10-09T19:42:33.234Z",
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.first_fetched_at",
+          "expected": "2026-10-09T19:42:33.234Z",
+          "actual": "2026-10-09T19:42:33.234Z",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 1017
+    },
+    {
+      "label": "Janela sobreposta incorpora só uma nova medição; totais usam a última",
+      "method": "POST",
+      "path": "/connections/c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3/sync",
+      "request": {
+        "from": "2026-06-01T10:00:00Z",
+        "to": "2026-06-01T11:00:00Z"
+      },
+      "http_status": 200,
+      "response": {
+        "connection_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "window": {
+          "from": "2026-06-01T10:00:00.000Z",
+          "to": "2026-06-01T11:00:00.000Z"
+        },
+        "fetched_at": "2026-10-09T19:42:33.250Z",
+        "received": 3,
+        "new_snapshots": 1,
+        "duplicates": 2,
+        "outside_window": 0,
+        "attempts": 1,
+        "waits_ms": [],
+        "posts": [
+          {
+            "post_id": "post-1",
+            "snapshot_count": 2,
+            "latest": {
+              "post_id": "post-1",
+              "observed_at": "2026-06-01T11:00:00.000Z",
+              "views": 150,
+              "likes": 14,
+              "comments": 3,
+              "first_fetched_at": "2026-10-09T19:42:33.250Z",
+              "fetched_at": "2026-10-09T19:42:33.250Z"
+            }
+          },
+          {
+            "post_id": "post-2",
+            "snapshot_count": 1,
+            "latest": {
+              "post_id": "post-2",
+              "observed_at": "2026-06-01T10:30:00.000Z",
+              "views": 60,
+              "likes": 8,
+              "comments": 1,
+              "first_fetched_at": "2026-10-09T19:42:33.234Z",
+              "fetched_at": "2026-10-09T19:42:33.250Z"
+            }
+          }
+        ],
+        "totals": {
+          "views": 210,
+          "likes": 22,
+          "comments": 4
+        }
+      },
+      "checks": [
+        {
+          "field": "attempts",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "received",
+          "expected": 3,
+          "actual": 3,
+          "passed": true
+        },
+        {
+          "field": "new_snapshots",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "duplicates",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "posts.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "posts.0.snapshot_count",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.views",
+          "expected": 150,
+          "actual": 150,
+          "passed": true
+        },
+        {
+          "field": "totals.views",
+          "expected": 210,
+          "actual": 210,
+          "passed": true
+        },
+        {
+          "field": "totals.likes",
+          "expected": 22,
+          "actual": 22,
+          "passed": true
+        },
+        {
+          "field": "totals.comments",
+          "expected": 4,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.fetched_at",
+          "expected": "2026-10-09T19:42:33.250Z",
+          "actual": "2026-10-09T19:42:33.250Z",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 11
+    },
+    {
+      "label": "Replay: três duplicatas, zero novas medições e totais preservados",
+      "method": "POST",
+      "path": "/connections/c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3/sync",
+      "request": {
+        "from": "2026-06-01T10:00:00Z",
+        "to": "2026-06-01T11:00:00Z"
+      },
+      "http_status": 200,
+      "response": {
+        "connection_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "window": {
+          "from": "2026-06-01T10:00:00.000Z",
+          "to": "2026-06-01T11:00:00.000Z"
+        },
+        "fetched_at": "2026-10-09T19:42:33.261Z",
+        "received": 3,
+        "new_snapshots": 0,
+        "duplicates": 3,
+        "outside_window": 0,
+        "attempts": 1,
+        "waits_ms": [],
+        "posts": [
+          {
+            "post_id": "post-1",
+            "snapshot_count": 2,
+            "latest": {
+              "post_id": "post-1",
+              "observed_at": "2026-06-01T11:00:00.000Z",
+              "views": 150,
+              "likes": 14,
+              "comments": 3,
+              "first_fetched_at": "2026-10-09T19:42:33.250Z",
+              "fetched_at": "2026-10-09T19:42:33.261Z"
+            }
+          },
+          {
+            "post_id": "post-2",
+            "snapshot_count": 1,
+            "latest": {
+              "post_id": "post-2",
+              "observed_at": "2026-06-01T10:30:00.000Z",
+              "views": 60,
+              "likes": 8,
+              "comments": 1,
+              "first_fetched_at": "2026-10-09T19:42:33.234Z",
+              "fetched_at": "2026-10-09T19:42:33.261Z"
+            }
+          }
+        ],
+        "totals": {
+          "views": 210,
+          "likes": 22,
+          "comments": 4
+        }
+      },
+      "checks": [
+        {
+          "field": "new_snapshots",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "duplicates",
+          "expected": 3,
+          "actual": 3,
+          "passed": true
+        },
+        {
+          "field": "posts.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "posts.0.snapshot_count",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "totals",
+          "expected": {
+            "views": 210,
+            "likes": 22,
+            "comments": 4
+          },
+          "actual": {
+            "views": 210,
+            "likes": 22,
+            "comments": 4
+          },
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.fetched_at",
+          "expected": "2026-10-09T19:42:33.261Z",
+          "actual": "2026-10-09T19:42:33.261Z",
+          "passed": true
+        },
+        {
+          "field": "posts.0.latest.first_fetched_at",
+          "expected": "2026-10-09T19:42:33.250Z",
+          "actual": "2026-10-09T19:42:33.250Z",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 10
+    },
+    {
+      "label": "Histórico auditável preserva 100 e 150 views, primeira busca e fetched_at atual",
+      "method": "GET",
+      "path": "/connections/c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3/posts/post-1",
+      "http_status": 200,
+      "response": {
+        "connection_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "post_id": "post-1",
+        "latest": {
+          "post_id": "post-1",
+          "observed_at": "2026-06-01T11:00:00.000Z",
+          "views": 150,
+          "likes": 14,
+          "comments": 3,
+          "first_fetched_at": "2026-10-09T19:42:33.250Z",
+          "fetched_at": "2026-10-09T19:42:33.261Z"
+        },
+        "snapshots": [
+          {
+            "post_id": "post-1",
+            "observed_at": "2026-06-01T10:00:00.000Z",
+            "views": 100,
+            "likes": 10,
+            "comments": 2,
+            "first_fetched_at": "2026-10-09T19:42:33.234Z",
+            "fetched_at": "2026-10-09T19:42:33.261Z"
+          },
+          {
+            "post_id": "post-1",
+            "observed_at": "2026-06-01T11:00:00.000Z",
+            "views": 150,
+            "likes": 14,
+            "comments": 3,
+            "first_fetched_at": "2026-10-09T19:42:33.250Z",
+            "fetched_at": "2026-10-09T19:42:33.261Z"
+          }
+        ]
+      },
+      "checks": [
+        {
+          "field": "post_id",
+          "expected": "post-1",
+          "actual": "post-1",
+          "passed": true
+        },
+        {
+          "field": "snapshots.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "snapshots.0.views",
+          "expected": 100,
+          "actual": 100,
+          "passed": true
+        },
+        {
+          "field": "snapshots.1.views",
+          "expected": 150,
+          "actual": 150,
+          "passed": true
+        },
+        {
+          "field": "latest.views",
+          "expected": 150,
+          "actual": 150,
+          "passed": true
+        },
+        {
+          "field": "snapshots.0.first_fetched_at",
+          "expected": "2026-10-09T19:42:33.234Z",
+          "actual": "2026-10-09T19:42:33.234Z",
+          "passed": true
+        },
+        {
+          "field": "snapshots.1.first_fetched_at",
+          "expected": "2026-10-09T19:42:33.250Z",
+          "actual": "2026-10-09T19:42:33.250Z",
+          "passed": true
+        },
+        {
+          "field": "snapshots.0.fetched_at",
+          "expected": "2026-10-09T19:42:33.261Z",
+          "actual": "2026-10-09T19:42:33.261Z",
+          "passed": true
+        },
+        {
+          "field": "latest.fetched_at",
+          "expected": "2026-10-09T19:42:33.261Z",
+          "actual": "2026-10-09T19:42:33.261Z",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 13
+    },
+    {
+      "label": "Outra conta simulada pede Retry-After de 120 segundos",
+      "method": "POST",
+      "path": "/connections",
+      "request": {
+        "creator_id": "criador-captura-04",
+        "network": "tiktok",
+        "account_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "token": "ficticio",
+        "simulation": "rate-limit-too-long"
+      },
+      "http_status": 201,
+      "response": {
+        "id": "d6ff9455-3444-47ca-9375-44f93b496ec2",
+        "creator_id": "criador-captura-04",
+        "network": "tiktok",
+        "account_id": "c2734a32-62e8-4dad-b3f4-6f9f8e7dfcf3",
+        "simulation": "rate-limit-too-long",
+        "created_at": "2026-10-09T19:42:33.283Z",
+        "last_sync_at": null,
+        "authorized": true
+      },
+      "checks": [
+        {
+          "field": "authorized",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        {
+          "field": "simulation",
+          "expected": "rate-limit-too-long",
+          "actual": "rate-limit-too-long",
+          "passed": true
+        },
+        {
+          "field": "network",
+          "expected": "tiktok",
+          "actual": "tiktok",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 8
+    },
+    {
+      "label": "429 explícito: espera maior que teto de 2 s é adiada sem retry antecipado",
+      "method": "POST",
+      "path": "/connections/d6ff9455-3444-47ca-9375-44f93b496ec2/sync",
+      "request": {
+        "from": "2026-06-01T09:00:00Z",
+        "to": "2026-06-01T11:00:00Z"
+      },
+      "http_status": 429,
+      "response": {
+        "error": {
+          "code": "rate_limit_deferred",
+          "message": "Retry-After excede o teto de espera; sincronização adiada sem antecipar outra tentativa.",
+          "attempts": 1,
+          "waits_ms": [],
+          "retry_after_ms": 120000,
+          "max_wait_ms": 2000
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "rate_limit_deferred",
+          "actual": "rate_limit_deferred",
+          "passed": true
+        },
+        {
+          "field": "error.attempts",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "error.waits_ms.length",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "error.retry_after_ms",
+          "expected": 120000,
+          "actual": 120000,
+          "passed": true
+        },
+        {
+          "field": "error.max_wait_ms",
+          "expected": 2000,
+          "actual": 2000,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 7
+    },
+    {
+      "label": "Busca adiada mantém essa conta sem posts ou contadores parciais",
+      "method": "GET",
+      "path": "/connections/d6ff9455-3444-47ca-9375-44f93b496ec2/posts",
+      "http_status": 200,
+      "response": {
+        "connection_id": "d6ff9455-3444-47ca-9375-44f93b496ec2",
+        "posts": [],
+        "totals": {
+          "views": 0,
+          "likes": 0,
+          "comments": 0
+        }
+      },
+      "checks": [
+        {
+          "field": "posts.length",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "totals.views",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "totals.likes",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "totals.comments",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 9
+    }
+  ]
+}

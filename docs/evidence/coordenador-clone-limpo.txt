@@ -1,0 +1,487 @@
+Checkout isolado de ebcbf1fbf8f3e9dc206f6a1312ce7e0db283b15c; sem arquivos não versionados, node_modules ou dados locais.
+$ node --version
+v22.23.3
+
+exit_code: 0
+
+$ npm ci
+
+up to date, audited 1 package in 474ms
+
+found 0 vulnerabilities
+
+exit_code: 0
+
+$ npm test
+
+> conty-metricas-redes@1.0.0 test
+> node --test test/*.test.js
+
+TAP version 13
+# Subtest: repetir outra chamada HTTP/lógica não contorna Retry-After adiado
+ok 1 - repetir outra chamada HTTP/lógica não contorna Retry-After adiado
+  ---
+  duration_ms: 10.573209
+  type: 'test'
+  ...
+# Subtest: 429 que esgota tentativas continua valendo na próxima sincronização
+ok 2 - 429 que esgota tentativas continua valendo na próxima sincronização
+  ---
+  duration_ms: 0.754708
+  type: 'test'
+  ...
+# Subtest: fluxo HTTP real: conectar, sincronizar com 429, sobrepor, repetir e consultar
+ok 3 - fluxo HTTP real: conectar, sincronizar com 429, sobrepor, repetir e consultar
+  ---
+  duration_ms: 115.522542
+  type: 'test'
+  ...
+# Subtest: provedor simulado devolve duplicatas sem duplicar as métricas
+ok 4 - provedor simulado devolve duplicatas sem duplicar as métricas
+  ---
+  duration_ms: 16.044167
+  type: 'test'
+  ...
+# Subtest: 429 acima do teto retorna prazo ao chamador e não altera estado
+ok 5 - 429 acima do teto retorna prazo ao chamador e não altera estado
+  ---
+  duration_ms: 32.205125
+  type: 'test'
+  ...
+# Subtest: falha permanente do provedor não revela seu texto ou o token
+ok 6 - falha permanente do provedor não revela seu texto ou o token
+  ---
+  duration_ms: 88.170417
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON inválido, tipo, tamanho e métodos têm erro claro
+ok 7 - HTTP: JSON inválido, tipo, tamanho e métodos têm erro claro
+  ---
+  duration_ms: 23.513416
+  type: 'test'
+  ...
+# Subtest: identidade duplicada e corpo fora do contrato são rejeitados pela API
+ok 8 - identidade duplicada e corpo fora do contrato são rejeitados pela API
+  ---
+  duration_ms: 18.273208
+  type: 'test'
+  ...
+# Subtest: demonstração do navegador usa a mesma API e não carrega recursos externos
+ok 9 - demonstração do navegador usa a mesma API e não carrega recursos externos
+  ---
+  duration_ms: 3.433583
+  type: 'test'
+  ...
+# Subtest: resposta duplicada e repetição não somam contadores e registram a busca
+ok 10 - resposta duplicada e repetição não somam contadores e registram a busca
+  ---
+  duration_ms: 22.6345
+  type: 'test'
+  ...
+# Subtest: janelas sobrepostas conservam snapshots únicos e usam a última medição de cada post
+ok 11 - janelas sobrepostas conservam snapshots únicos e usam a última medição de cada post
+  ---
+  duration_ms: 1.829542
+  type: 'test'
+  ...
+# Subtest: uma medição antiga recebida depois não regride o latest
+ok 12 - uma medição antiga recebida depois não regride o latest
+  ---
+  duration_ms: 0.562416
+  type: 'test'
+  ...
+# Subtest: a última medição é temporal: uma correção posterior do provedor pode reduzir um contador
+ok 13 - a última medição é temporal: uma correção posterior do provedor pode reduzir um contador
+  ---
+  duration_ms: 0.393292
+  type: 'test'
+  ...
+# Subtest: normaliza fusos antes de reconhecer o mesmo snapshot
+ok 14 - normaliza fusos antes de reconhecer o mesmo snapshot
+  ---
+  duration_ms: 0.376
+  type: 'test'
+  ...
+# Subtest: snapshots fora da janela não contaminam os totais; limites são inclusivos
+ok 15 - snapshots fora da janela não contaminam os totais; limites são inclusivos
+  ---
+  duration_ms: 1.169917
+  type: 'test'
+  ...
+# Subtest: lote com contadores conflitantes não produz gravação parcial
+ok 16 - lote com contadores conflitantes não produz gravação parcial
+  ---
+  duration_ms: 1.573375
+  type: 'test'
+  ...
+# Subtest: contadores conflitantes no mesmo lote vazio também são atômicos
+ok 17 - contadores conflitantes no mesmo lote vazio também são atômicos
+  ---
+  duration_ms: 0.172584
+  type: 'test'
+  ...
+# Subtest: resposta inválida não faz retry nem deixa escrita parcial
+    # Subtest: payload inválido null
+    ok 1 - payload inválido null
+      ---
+      duration_ms: 1.694542
+      type: 'test'
+      ...
+    # Subtest: payload inválido {}
+    ok 2 - payload inválido {}
+      ---
+      duration_ms: 0.653917
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 3 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.581542
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 4 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 2.009041
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 5 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.16975
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 6 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 1.094041
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 7 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.685208
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 8 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.284459
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 9 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.359041
+      type: 'test'
+      ...
+    # Subtest: payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+    ok 10 - payload inválido [{"post_id":"post-1","observed_at":"2026-06-01T11:00:00Z","views":150,"like
+      ---
+      duration_ms: 0.209
+      type: 'test'
+      ...
+    1..10
+ok 18 - resposta inválida não faz retry nem deixa escrita parcial
+  ---
+  duration_ms: 13.671917
+  type: 'test'
+  ...
+# Subtest: soma de contadores fora da precisão segura é rejeitada antes do commit
+ok 19 - soma de contadores fora da precisão segura é rejeitada antes do commit
+  ---
+  duration_ms: 0.221083
+  type: 'test'
+  ...
+# Subtest: syncs concorrentes da mesma conta são serializados e não duplicam histórico
+ok 20 - syncs concorrentes da mesma conta são serializados e não duplicam histórico
+  ---
+  duration_ms: 13.576042
+  type: 'test'
+  ...
+# Subtest: uma falha não prende a fila da próxima sincronização
+ok 21 - uma falha não prende a fila da próxima sincronização
+  ---
+  duration_ms: 0.712
+  type: 'test'
+  ...
+# Subtest: contas/redes diferentes não compartilham snapshots ou bloqueios
+ok 22 - contas/redes diferentes não compartilham snapshots ou bloqueios
+  ---
+  duration_ms: 0.478666
+  type: 'test'
+  ...
+# Subtest: DTOs devolvidos não dão acesso para mutar o estado armazenado
+ok 23 - DTOs devolvidos não dão acesso para mutar o estado armazenado
+  ---
+  duration_ms: 0.717875
+  type: 'test'
+  ...
+# Subtest: conexão autorizada exige token e identidade válidos; a conta só pertence a uma conexão
+    # Subtest: campos token
+    ok 1 - campos token
+      ---
+      duration_ms: 0.526917
+      type: 'test'
+      ...
+    # Subtest: campos token
+    ok 2 - campos token
+      ---
+      duration_ms: 0.10925
+      type: 'test'
+      ...
+    # Subtest: campos token
+    ok 3 - campos token
+      ---
+      duration_ms: 0.087208
+      type: 'test'
+      ...
+    # Subtest: campos network
+    ok 4 - campos network
+      ---
+      duration_ms: 0.05175
+      type: 'test'
+      ...
+    # Subtest: campos simulation
+    ok 5 - campos simulation
+      ---
+      duration_ms: 0.032959
+      type: 'test'
+      ...
+    # Subtest: campos account_id
+    ok 6 - campos account_id
+      ---
+      duration_ms: 0.033625
+      type: 'test'
+      ...
+    # Subtest: campos creator_id
+    ok 7 - campos creator_id
+      ---
+      duration_ms: 0.124875
+      type: 'test'
+      ...
+    # Subtest: campos id
+    ok 8 - campos id
+      ---
+      duration_ms: 0.032666
+      type: 'test'
+      ...
+    # Subtest: campos surprise
+    ok 9 - campos surprise
+      ---
+      duration_ms: 0.184375
+      type: 'test'
+      ...
+    1..9
+ok 24 - conexão autorizada exige token e identidade válidos; a conta só pertence a uma conexão
+  ---
+  duration_ms: 2.531375
+  type: 'test'
+  ...
+# Subtest: entrada inválida da janela falha antes de chamar o provedor
+    # Subtest: null
+    ok 1 - null
+      ---
+      duration_ms: 0.14975
+      type: 'test'
+      ...
+    # Subtest: []
+    ok 2 - []
+      ---
+      duration_ms: 0.049167
+      type: 'test'
+      ...
+    # Subtest: {}
+    ok 3 - {}
+      ---
+      duration_ms: 0.1585
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T09:00:00Z"}
+    ok 4 - {"from":"2026-06-01T09:00:00Z"}
+      ---
+      duration_ms: 0.1955
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T09:00:00Z","to":"2026-06-01"}
+    ok 5 - {"from":"2026-06-01T09:00:00Z","to":"2026-06-01"}
+      ---
+      duration_ms: 0.259416
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T25:00:00Z","to":"2026-06-01T12:00:00Z"}
+    ok 6 - {"from":"2026-06-01T25:00:00Z","to":"2026-06-01T12:00:00Z"}
+      ---
+      duration_ms: 0.065666
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T09:00:00+25:00","to":"2026-06-01T12:00:00Z"}
+    ok 7 - {"from":"2026-06-01T09:00:00+25:00","to":"2026-06-01T12:00:00Z"}
+      ---
+      duration_ms: 0.080083
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-02T09:00:00Z","to":"2026-06-01T12:00:00Z"}
+    ok 8 - {"from":"2026-06-02T09:00:00Z","to":"2026-06-01T12:00:00Z"}
+      ---
+      duration_ms: 0.042834
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T09:00:00Z","to":"2026-06-01T12:00:01Z"}
+    ok 9 - {"from":"2026-06-01T09:00:00Z","to":"2026-06-01T12:00:01Z"}
+      ---
+      duration_ms: 0.037042
+      type: 'test'
+      ...
+    # Subtest: {"from":"2026-06-01T09:00:00Z","to":"2026-06-01T12:00:00Z","token":"ficticio"}
+    ok 10 - {"from":"2026-06-01T09:00:00Z","to":"2026-06-01T12:00:00Z","token":"ficticio"}
+      ---
+      duration_ms: 0.032459
+      type: 'test'
+      ...
+    1..10
+ok 25 - entrada inválida da janela falha antes de chamar o provedor
+  ---
+  duration_ms: 1.46075
+  type: 'test'
+  ...
+# Subtest: 429 honra Retry-After em segundos com relógio controlado
+ok 26 - 429 honra Retry-After em segundos com relógio controlado
+  ---
+  duration_ms: 6.127625
+  type: 'test'
+  ...
+# Subtest: 429 honra HTTP-date, calculando o prazo no instante da falha
+ok 27 - 429 honra HTTP-date, calculando o prazo no instante da falha
+  ---
+  duration_ms: 3.237709
+  type: 'test'
+  ...
+# Subtest: Retry-After acima do teto adia, sem esperar nem tentar antes
+ok 28 - Retry-After acima do teto adia, sem esperar nem tentar antes
+  ---
+  duration_ms: 1.046958
+  type: 'test'
+  ...
+# Subtest: um prazo gigantesco não causa overflow, espera ilimitada ou tentativa antecipada
+ok 29 - um prazo gigantesco não causa overflow, espera ilimitada ou tentativa antecipada
+  ---
+  duration_ms: 1.527459
+  type: 'test'
+  ...
+# Subtest: 429 com Retry-After zero ou já vencido pode repetir imediatamente
+    # Subtest: 0
+    ok 1 - 0
+      ---
+      duration_ms: 0.528833
+      type: 'test'
+      ...
+    # Subtest: Mon, 01 Jun 2026 11:59:00 GMT
+    ok 2 - Mon, 01 Jun 2026 11:59:00 GMT
+      ---
+      duration_ms: 2.707959
+      type: 'test'
+      ...
+    1..2
+ok 30 - 429 com Retry-After zero ou já vencido pode repetir imediatamente
+  ---
+  duration_ms: 3.575208
+  type: 'test'
+  ...
+# Subtest: Retry-After ausente ou inválido usa backoff limitado e nunca loop infinito
+    # Subtest: undefined
+    ok 1 - undefined
+      ---
+      duration_ms: 0.471208
+      type: 'test'
+      ...
+    # Subtest: garbage
+    ok 2 - garbage
+      ---
+      duration_ms: 0.781541
+      type: 'test'
+      ...
+    # Subtest: -1
+    ok 3 - -1
+      ---
+      duration_ms: 1.599625
+      type: 'test'
+      ...
+    # Subtest: 1.5
+    ok 4 - 1.5
+      ---
+      duration_ms: 1.012708
+      type: 'test'
+      ...
+    1..4
+ok 31 - Retry-After ausente ou inválido usa backoff limitado e nunca loop infinito
+  ---
+  duration_ms: 5.237208
+  type: 'test'
+  ...
+# Subtest: falha transitória faz até o teto de tentativas; nenhuma escrita parcial
+ok 32 - falha transitória faz até o teto de tentativas; nenhuma escrita parcial
+  ---
+  duration_ms: 1.240708
+  type: 'test'
+  ...
+# Subtest: falha permanente não repete e não vaza texto do provedor
+ok 33 - falha permanente não repete e não vaza texto do provedor
+  ---
+  duration_ms: 0.133875
+  type: 'test'
+  ...
+# Subtest: com maxAttempts=1 não espera após a única tentativa
+ok 34 - com maxAttempts=1 não espera após a única tentativa
+  ---
+  duration_ms: 0.138917
+  type: 'test'
+  ...
+# Subtest: sleeper que acorda cedo completa o prazo antes de repetir
+ok 35 - sleeper que acorda cedo completa o prazo antes de repetir
+  ---
+  duration_ms: 0.544833
+  type: 'test'
+  ...
+# Subtest: timeout real é acionado por temporizador controlado, aborta e faz retry
+ok 36 - timeout real é acionado por temporizador controlado, aborta e faz retry
+  ---
+  duration_ms: 10.090875
+  type: 'test'
+  ...
+# Subtest: timeout continua limitado mesmo se o provedor ignora AbortSignal
+ok 37 - timeout continua limitado mesmo se o provedor ignora AbortSignal
+  ---
+  duration_ms: 0.514417
+  type: 'test'
+  ...
+# Subtest: timeouts repetidos respeitam o limite de tentativas
+ok 38 - timeouts repetidos respeitam o limite de tentativas
+  ---
+  duration_ms: 0.510792
+  type: 'test'
+  ...
+# Subtest: configuração inválida é recusada na inicialização
+ok 39 - configuração inválida é recusada na inicialização
+  ---
+  duration_ms: 0.170125
+  type: 'test'
+  ...
+# Subtest: parser de Retry-After aceita apenas segundos ou HTTP-date, com prazo mínimo zero
+ok 40 - parser de Retry-After aceita apenas segundos ou HTTP-date, com prazo mínimo zero
+  ---
+  duration_ms: 0.139459
+  type: 'test'
+  ...
+1..40
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 439.916666
+
+exit_code: 0
+
