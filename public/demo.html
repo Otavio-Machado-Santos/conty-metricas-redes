@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Métricas das redes — demonstração real da API</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;color:#172129;background:#f5f6f8;margin:0;padding:32px}
+main{max-width:1000px;margin:auto}h1{font-size:30px;margin:0}p{color:#4e5964}button{padding:12px 18px;margin:6px 6px 6px 0;border:0;border-radius:8px;background:#174c3e;color:white;font:inherit;cursor:pointer}button:disabled{opacity:.4;cursor:default}.cards{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.card{flex:1;min-width:140px;padding:16px 22px;background:white;border:1px solid #dfe4e9;border-radius:10px}.card strong{display:block;font-size:30px}pre{white-space:pre-wrap;word-break:break-word;background:#10232b;color:#d4ece5;padding:20px;border-radius:12px;font-size:14px}#status{font-weight:600;min-height:26px}small{display:block;color:#5a656e}
+</style>
+<main>
+<small>Conty · desafio 4 · provedor simulado</small>
+<h1>Uma métrica, mesmo com buscas repetidas</h1>
+<p>Esta tela executa requisições HTTP reais na API local. A primeira tentativa recebe 429 e espera 1 segundo. Janelas sobrepostas mantêm cada snapshot uma vez.</p>
+<div><button id="create">1. Criar conexão</button><button id="first" disabled>2. Primeira janela</button><button id="overlap" disabled>3. Janela sobreposta</button><button id="repeat" disabled>4. Repetir janela</button><button id="history" disabled>5. Ver histórico</button></div>
+<div class="cards"><div class="card">Views atuais<strong id="views">0</strong></div><div class="card">Likes atuais<strong id="likes">0</strong></div><div class="card">Comentários atuais<strong id="comments">0</strong></div><div class="card">Novos snapshots<strong id="snapshots">0</strong></div></div>
+<div id="status" role="status">Pronto para criar uma conexão autorizada fictícia.</div>
+<pre id="output">Nenhuma requisição executada.</pre>
+<p>Os números são contadores absolutos dos posts, não incrementos. OAuth e redes reais estão fora desta demonstração. O estado fica em memória enquanto o processo roda.</p>
+</main>
+<script>
+let connection;
+let canInspect=false;
+const buttons=[...document.querySelectorAll('button')];
+async function run(method,path,body,next){
+  buttons.forEach(button=>button.disabled=true);
+  document.querySelector('#status').textContent='Requisição em andamento…';
+  try {
+    const started=performance.now();
+    const response=await fetch(path,{method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+    const data=await response.json();
+    document.querySelector('#output').textContent=method+' '+path+'\nHTTP '+response.status+'\n'+JSON.stringify(data,null,2);
+    if(!response.ok) throw Error(data.error.message);
+    if(data.id) connection=data.id;
+    if(data.totals) for(const metric of ['views','likes','comments']) document.querySelector('#'+metric).textContent=data.totals[metric];
+    if(data.posts?.length) canInspect=true;
+    document.querySelector('#snapshots').textContent=data.new_snapshots??'—';
+    document.querySelector('#status').textContent='Concluído em '+Math.round(performance.now()-started)+' ms'+(data.attempts?' · '+data.attempts+' tentativa(s) · espera '+data.waits_ms.join(', ')+' ms':'');
+    document.querySelector('#'+next).disabled=false;
+    if(canInspect){ document.querySelector('#history').disabled=false; document.querySelector('#repeat').disabled=false; }
+  } catch(error){document.querySelector('#status').textContent='Erro: '+error.message;document.querySelector('#create').disabled=false;}
+}
+document.querySelector('#create').onclick=()=>run('POST','/connections',{id:'demo-'+crypto.randomUUID(),creator_id:'criador-demo',network:'instagram',account_id:'conta-'+crypto.randomUUID(),token:'token-ficticio-demonstracao',simulation:'rate-limit-once'},'first');
+const windowOne={from:'2026-06-01T09:00:00.000Z',to:'2026-06-01T10:59:59.000Z'};
+const windowTwo={from:'2026-06-01T10:00:00.000Z',to:'2026-06-01T11:00:00.000Z'};
+document.querySelector('#first').onclick=()=>run('POST','/connections/'+connection+'/sync',windowOne,'overlap');
+document.querySelector('#overlap').onclick=()=>run('POST','/connections/'+connection+'/sync',windowTwo,'repeat');
+document.querySelector('#repeat').onclick=()=>run('POST','/connections/'+connection+'/sync',windowTwo,'repeat');
+document.querySelector('#history').onclick=()=>run('GET','/connections/'+connection+'/posts/post-1',undefined,'repeat');
+</script>
+</html>

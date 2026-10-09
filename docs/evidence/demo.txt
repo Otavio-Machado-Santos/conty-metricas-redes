@@ -1,0 +1,215 @@
+
+> conty-metricas-redes@1.0.0 demo
+> node scripts/demo.js
+
+{
+  "method": "POST",
+  "path": "/connections",
+  "status": 201,
+  "result": {
+    "id": "demo-1791573054048",
+    "creator_id": "criador-demo",
+    "network": "instagram",
+    "account_id": "demo-1791573054048",
+    "simulation": "rate-limit-once",
+    "created_at": "2026-10-09T19:10:54.070Z",
+    "last_sync_at": null,
+    "authorized": true
+  }
+}
+{
+  "method": "POST",
+  "path": "/connections/demo-1791573054048/sync",
+  "status": 200,
+  "result": {
+    "connection_id": "demo-1791573054048",
+    "window": {
+      "from": "2026-06-01T09:00:00.000Z",
+      "to": "2026-06-01T10:59:59.000Z"
+    },
+    "fetched_at": "2026-10-09T19:10:55.079Z",
+    "received": 2,
+    "new_snapshots": 2,
+    "duplicates": 0,
+    "outside_window": 0,
+    "attempts": 2,
+    "waits_ms": [
+      1000
+    ],
+    "posts": [
+      {
+        "post_id": "post-1",
+        "snapshot_count": 1,
+        "latest": {
+          "post_id": "post-1",
+          "observed_at": "2026-06-01T10:00:00.000Z",
+          "views": 100,
+          "likes": 10,
+          "comments": 2,
+          "first_fetched_at": "2026-10-09T19:10:55.079Z",
+          "fetched_at": "2026-10-09T19:10:55.079Z"
+        }
+      },
+      {
+        "post_id": "post-2",
+        "snapshot_count": 1,
+        "latest": {
+          "post_id": "post-2",
+          "observed_at": "2026-06-01T10:30:00.000Z",
+          "views": 60,
+          "likes": 8,
+          "comments": 1,
+          "first_fetched_at": "2026-10-09T19:10:55.079Z",
+          "fetched_at": "2026-10-09T19:10:55.079Z"
+        }
+      }
+    ],
+    "totals": {
+      "views": 160,
+      "likes": 18,
+      "comments": 3
+    }
+  }
+}
+{
+  "method": "POST",
+  "path": "/connections/demo-1791573054048/sync",
+  "status": 200,
+  "result": {
+    "connection_id": "demo-1791573054048",
+    "window": {
+      "from": "2026-06-01T10:00:00.000Z",
+      "to": "2026-06-01T11:00:00.000Z"
+    },
+    "fetched_at": "2026-10-09T19:10:55.090Z",
+    "received": 3,
+    "new_snapshots": 1,
+    "duplicates": 2,
+    "outside_window": 0,
+    "attempts": 1,
+    "waits_ms": [],
+    "posts": [
+      {
+        "post_id": "post-1",
+        "snapshot_count": 2,
+        "latest": {
+          "post_id": "post-1",
+          "observed_at": "2026-06-01T11:00:00.000Z",
+          "views": 150,
+          "likes": 14,
+          "comments": 3,
+          "first_fetched_at": "2026-10-09T19:10:55.090Z",
+          "fetched_at": "2026-10-09T19:10:55.090Z"
+        }
+      },
+      {
+        "post_id": "post-2",
+        "snapshot_count": 1,
+        "latest": {
+          "post_id": "post-2",
+          "observed_at": "2026-06-01T10:30:00.000Z",
+          "views": 60,
+          "likes": 8,
+          "comments": 1,
+          "first_fetched_at": "2026-10-09T19:10:55.079Z",
+          "fetched_at": "2026-10-09T19:10:55.090Z"
+        }
+      }
+    ],
+    "totals": {
+      "views": 210,
+      "likes": 22,
+      "comments": 4
+    }
+  }
+}
+{
+  "method": "POST",
+  "path": "/connections/demo-1791573054048/sync",
+  "status": 200,
+  "result": {
+    "connection_id": "demo-1791573054048",
+    "window": {
+      "from": "2026-06-01T10:00:00.000Z",
+      "to": "2026-06-01T11:00:00.000Z"
+    },
+    "fetched_at": "2026-10-09T19:10:55.091Z",
+    "received": 3,
+    "new_snapshots": 0,
+    "duplicates": 3,
+    "outside_window": 0,
+    "attempts": 1,
+    "waits_ms": [],
+    "posts": [
+      {
+        "post_id": "post-1",
+        "snapshot_count": 2,
+        "latest": {
+          "post_id": "post-1",
+          "observed_at": "2026-06-01T11:00:00.000Z",
+          "views": 150,
+          "likes": 14,
+          "comments": 3,
+          "first_fetched_at": "2026-10-09T19:10:55.090Z",
+          "fetched_at": "2026-10-09T19:10:55.091Z"
+        }
+      },
+      {
+        "post_id": "post-2",
+        "snapshot_count": 1,
+        "latest": {
+          "post_id": "post-2",
+          "observed_at": "2026-06-01T10:30:00.000Z",
+          "views": 60,
+          "likes": 8,
+          "comments": 1,
+          "first_fetched_at": "2026-10-09T19:10:55.079Z",
+          "fetched_at": "2026-10-09T19:10:55.091Z"
+        }
+      }
+    ],
+    "totals": {
+      "views": 210,
+      "likes": 22,
+      "comments": 4
+    }
+  }
+}
+{
+  "method": "GET",
+  "path": "/connections/demo-1791573054048/posts/post-1",
+  "status": 200,
+  "result": {
+    "connection_id": "demo-1791573054048",
+    "post_id": "post-1",
+    "latest": {
+      "post_id": "post-1",
+      "observed_at": "2026-06-01T11:00:00.000Z",
+      "views": 150,
+      "likes": 14,
+      "comments": 3,
+      "first_fetched_at": "2026-10-09T19:10:55.090Z",
+      "fetched_at": "2026-10-09T19:10:55.091Z"
+    },
+    "snapshots": [
+      {
+        "post_id": "post-1",
+        "observed_at": "2026-06-01T10:00:00.000Z",
+        "views": 100,
+        "likes": 10,
+        "comments": 2,
+        "first_fetched_at": "2026-10-09T19:10:55.079Z",
+        "fetched_at": "2026-10-09T19:10:55.091Z"
+      },
+      {
+        "post_id": "post-1",
+        "observed_at": "2026-06-01T11:00:00.000Z",
+        "views": 150,
+        "likes": 14,
+        "comments": 3,
+        "first_fetched_at": "2026-10-09T19:10:55.090Z",
+        "fetched_at": "2026-10-09T19:10:55.091Z"
+      }
+    ]
+  }
+}

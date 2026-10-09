@@ -1,0 +1,27 @@
+### Suba npm start. Para captura no navegador abra /demo e siga os botões 1 a 5.
+### Este roteiro usa uma conexão nova, somente token fictício e API local real.
+POST http://127.0.0.1:3004/connections
+Content-Type: application/json
+
+{"id":"captura","creator_id":"criador-demo","network":"instagram","account_id":"captura","token":"token-ficticio","simulation":"rate-limit-once"}
+
+### Primeiro sync: 429 interno, espera real de 1 segundo, totals.views=160.
+POST http://127.0.0.1:3004/connections/captura/sync
+Content-Type: application/json
+
+{"from":"2026-06-01T09:00:00Z","to":"2026-06-01T10:59:59Z"}
+
+### Janela sobreposta: 1 snapshot novo e 2 duplicados, totals.views=210.
+POST http://127.0.0.1:3004/connections/captura/sync
+Content-Type: application/json
+
+{"from":"2026-06-01T10:00:00Z","to":"2026-06-01T11:00:00Z"}
+
+### Repetição: nenhum snapshot novo, 3 duplicados, totals.views continua 210.
+POST http://127.0.0.1:3004/connections/captura/sync
+Content-Type: application/json
+
+{"from":"2026-06-01T10:00:00Z","to":"2026-06-01T11:00:00Z"}
+
+### Histórico tem dois snapshots e latest=150 views, não 250.
+GET http://127.0.0.1:3004/connections/captura/posts/post-1

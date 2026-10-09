@@ -1,0 +1,13 @@
+{
+  "name": "conty-metricas-redes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sincronização idempotente de métricas com provedor simulado",
+  "type": "module",
+  "engines": { "node": ">=22 <23" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js",
+    "demo": "node scripts/demo.js"
+  }
+}

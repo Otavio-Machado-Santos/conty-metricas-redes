@@ -1,0 +1,56 @@
+{
+  "node": "v22.23.3",
+  "recorded_at": "2026-10-09T19:10:56.390Z",
+  "scenario": "timeout-once",
+  "elapsed_ms": 1164,
+  "status": 200,
+  "data": {
+    "connection_id": "timeout-evidencia",
+    "window": {
+      "from": "2026-06-01T09:00:00.000Z",
+      "to": "2026-06-01T11:00:00.000Z"
+    },
+    "fetched_at": "2026-10-09T19:10:56.387Z",
+    "received": 3,
+    "new_snapshots": 3,
+    "duplicates": 0,
+    "outside_window": 0,
+    "attempts": 2,
+    "waits_ms": [
+      100
+    ],
+    "posts": [
+      {
+        "post_id": "post-1",
+        "snapshot_count": 2,
+        "latest": {
+          "post_id": "post-1",
+          "observed_at": "2026-06-01T11:00:00.000Z",
+          "views": 150,
+          "likes": 14,
+          "comments": 3,
+          "first_fetched_at": "2026-10-09T19:10:56.387Z",
+          "fetched_at": "2026-10-09T19:10:56.387Z"
+        }
+      },
+      {
+        "post_id": "post-2",
+        "snapshot_count": 1,
+        "latest": {
+          "post_id": "post-2",
+          "observed_at": "2026-06-01T10:30:00.000Z",
+          "views": 60,
+          "likes": 8,
+          "comments": 1,
+          "first_fetched_at": "2026-10-09T19:10:56.387Z",
+          "fetched_at": "2026-10-09T19:10:56.387Z"
+        }
+      }
+    ],
+    "totals": {
+      "views": 210,
+      "likes": 22,
+      "comments": 4
+    }
+  }
+}
